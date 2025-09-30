@@ -4,4 +4,7 @@
     <string name="sign_in">Sign In</string>
     <string name="back">Back</string>
     <string name="profile">Profile</string>
+    <string name="welcome_message">Track your spending. Simplify your finances</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="or">Or</string>
 </resources>

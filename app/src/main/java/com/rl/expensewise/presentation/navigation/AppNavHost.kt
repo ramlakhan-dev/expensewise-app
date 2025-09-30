@@ -25,7 +25,8 @@ fun AppNavHost(
             route = Screen.WelcomeScreen.route
         ){
             WelcomeScreen(
-                modifier = modifier
+                modifier = modifier,
+                navController = navController
             )
         }
 
