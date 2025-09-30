@@ -7,4 +7,8 @@
     <string name="welcome_message">Track your spending. Simplify your finances</string>
     <string name="continue_with_google">Continue with Google</string>
     <string name="or">Or</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>

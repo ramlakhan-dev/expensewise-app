@@ -42,7 +42,8 @@ fun AppNavHost(
             route = Screen.SignUpScreen.route
         ) {
             SignUpScreen(
-                modifier = modifier
+                modifier = modifier,
+                navController = navController
             )
         }
 
