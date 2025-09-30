@@ -34,7 +34,8 @@ fun AppNavHost(
             route = Screen.SignInScreen.route
         ) {
             SignInScreen(
-                modifier = modifier
+                modifier = modifier,
+                navController = navController
             )
         }
 
