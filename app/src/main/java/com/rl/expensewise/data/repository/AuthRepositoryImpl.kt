@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.rl.expensewise.domain.model.AuthResult
+import com.rl.expensewise.domain.model.ResetPasswordResult
 import com.rl.expensewise.domain.model.User
 import com.rl.expensewise.domain.repository.AuthRepository
 import kotlinx.coroutines.tasks.await
@@ -55,5 +56,14 @@ class AuthRepositoryImpl @Inject constructor(
 
     override fun getCurrentUser(): FirebaseUser? {
         return firebaseAuth.currentUser
+    }
+
+    override suspend fun sendResetPasswordLink(email: String): ResetPasswordResult {
+        return try {
+            firebaseAuth.sendPasswordResetEmail(email)
+            ResetPasswordResult.Success
+        } catch (e: Exception) {
+            ResetPasswordResult.Error(e.message ?: "Failed to send link")
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.rl.expensewise.presentation.screens.signin
 
+import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,17 +16,22 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -35,17 +42,40 @@ import androidx.navigation.NavHostController
 import com.rl.expensewise.R
 import com.rl.expensewise.presentation.components.OutlinedInputText
 import com.rl.expensewise.presentation.components.PrimaryButton
+import com.rl.expensewise.presentation.components.ResetPasswordSheet
 import com.rl.expensewise.presentation.navigation.Screen
 import com.rl.expensewise.presentation.state.AuthState
+import com.rl.expensewise.presentation.state.ResetPasswordState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignInScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController
 ) {
 
+    val context = LocalContext.current
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var showSheet by remember { mutableStateOf(false) }
+
+
     val signInViewModel: SignInViewModel = hiltViewModel()
     val authState by signInViewModel.authState.collectAsState()
+
+    val resetPasswordState by signInViewModel.resetPasswordState.collectAsState()
+
+    if (showSheet) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                showSheet = false
+            },
+            sheetState = sheetState
+        ) {
+            ResetPasswordSheet { email ->
+                signInViewModel.sendResetPasswordLink(email)
+            }
+        }
+    }
 
     LaunchedEffect(authState) {
         if (authState is AuthState.Authenticated) {
@@ -55,6 +85,12 @@ fun SignInScreen(
                 }
                 launchSingleTop = true
             }
+        }
+    }
+
+    LaunchedEffect(resetPasswordState) {
+        if (resetPasswordState is ResetPasswordState.Success) {
+            showSheet = false
         }
     }
 
@@ -116,7 +152,10 @@ fun SignInScreen(
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 16.dp),
+                        .padding(vertical = 16.dp)
+                        .clickable {
+                            showSheet = true
+                        },
                     textAlign = TextAlign.End
                 )
 
@@ -126,6 +165,11 @@ fun SignInScreen(
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodyMedium
                     )
+                }
+
+                if (resetPasswordState is ResetPasswordState.Error) {
+                    Toast.makeText(context, (resetPasswordState as ResetPasswordState.Error).message,
+                        Toast.LENGTH_SHORT).show()
                 }
             }
 

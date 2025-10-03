@@ -6,6 +6,7 @@ import com.rl.expensewise.data.repository.AuthRepositoryImpl
 import com.rl.expensewise.domain.repository.AuthRepository
 import com.rl.expensewise.domain.usecase.auth.AuthUseCase
 import com.rl.expensewise.domain.usecase.auth.GetUserUseCase
+import com.rl.expensewise.domain.usecase.auth.SendResetPasswordLinkUseCase
 import com.rl.expensewise.domain.usecase.auth.SignInUseCase
 import com.rl.expensewise.domain.usecase.auth.SignOutUseCase
 import com.rl.expensewise.domain.usecase.auth.SignUpUseCase
@@ -36,6 +37,7 @@ object AuthModule {
             signUpUseCase = SignUpUseCase(authRepository),
             signInUseCase = SignInUseCase(authRepository),
             signOutUseCase = SignOutUseCase(authRepository),
-            getUserUseCase = GetUserUseCase(authRepository)
+            getUserUseCase = GetUserUseCase(authRepository),
+            sendResetPasswordLinkUseCase = SendResetPasswordLinkUseCase(authRepository)
         )
 }
