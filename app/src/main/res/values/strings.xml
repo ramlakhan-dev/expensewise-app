@@ -4,4 +4,5 @@
     <string name="sign_in">Sign In</string>
     <string name="reset_password">Reset Password</string>
     <string name="back">Back</string>
+    <string name="welcome_message">Track your spending. Simplify your finances</string>
 </resources>
