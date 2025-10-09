@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ExpenseWise</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="back">Back</string>
 </resources>
