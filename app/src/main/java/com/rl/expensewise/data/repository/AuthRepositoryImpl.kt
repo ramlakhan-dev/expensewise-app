@@ -41,7 +41,12 @@ class AuthRepositoryImpl @Inject constructor(
         email: String,
         password: String
     ): AuthResult {
-        TODO("Not yet implemented")
+        return try {
+            firebaseAuth.signInWithEmailAndPassword(email, password).await()
+            AuthResult.Authenticated
+        } catch (e: Exception) {
+            AuthResult.Error(e.message ?: "Sign in failed")
+        }
     }
 
     override suspend fun sendResetPasswordLink(email: String): ResetPasswordResult {
