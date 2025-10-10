@@ -5,7 +5,9 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.rl.expensewise.domain.model.AuthResult
 import com.rl.expensewise.domain.model.ResetPasswordResult
+import com.rl.expensewise.domain.model.User
 import com.rl.expensewise.domain.repository.AuthRepository
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -17,7 +19,22 @@ class AuthRepositoryImpl @Inject constructor(
         email: String,
         password: String
     ): AuthResult {
-        TODO("Not yet implemented")
+        return try {
+            val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+            val uid = result.user?.uid
+            if (uid == null) {
+                return AuthResult.Error("Sign up failed: UID is null")
+            }
+            val user = User(
+                id = uid,
+                name = name,
+                email = email
+            )
+            firebaseFirestore.collection("users").document(uid).set(user).await()
+            AuthResult.Authenticated
+        } catch (e: Exception) {
+            AuthResult.Error(e.message ?: "Sign up failed")
+        }
     }
 
     override suspend fun signIn(

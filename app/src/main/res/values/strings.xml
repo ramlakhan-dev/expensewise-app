@@ -5,4 +5,7 @@
     <string name="reset_password">Reset Password</string>
     <string name="back">Back</string>
     <string name="welcome_message">Track your spending. Simplify your finances</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
 </resources>
