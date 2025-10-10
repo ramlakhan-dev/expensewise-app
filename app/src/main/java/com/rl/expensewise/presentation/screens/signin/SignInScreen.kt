@@ -1,9 +1,11 @@
 package com.rl.expensewise.presentation.screens.signin
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -96,6 +98,17 @@ fun SignInScreen(
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done
                 )
+            )
+
+            Text(
+                text = stringResource(id = R.string.forgot_password),
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.End)
+                    .clickable {
+                        navController.navigate(route = Screen.ResetPasswordScreen.route)
+                    }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
