@@ -10,20 +10,27 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.rl.expensewise.R
 import com.rl.expensewise.presentation.navigation.AppNavHost
 import com.rl.expensewise.presentation.navigation.Screen
+import com.rl.expensewise.presentation.state.AuthState
+import com.rl.expensewise.presentation.viewmodel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpenseWiseApp() {
+
+    val authViewModel: AuthViewModel = hiltViewModel()
+    val userState by authViewModel.userState.collectAsState()
 
     val navController: NavHostController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
@@ -68,7 +75,7 @@ fun ExpenseWiseApp() {
         AppNavHost(
             modifier = Modifier.padding(innerPadding),
             navController = navController,
-            isAuthenticated = false
+            isAuthenticated = userState is AuthState.Authenticated
         )
     }
 
